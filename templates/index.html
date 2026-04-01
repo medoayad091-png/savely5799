@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Savely — حمّل بذكاء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--ink:#0d0d12;--ink2:#1a1a24;--ink3:#22223a;
+--line:rgba(255,255,255,0.07);--line2:rgba(255,255,255,0.13);
+--hi:#c8f135;--hi2:#a3d61a;
+--txt:#f0f0f8;--txt2:#8888aa;
+--r:14px;--r2:20px;--r3:28px;
+}
+body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--ink);color:var(--txt);min-height:100vh;overflow-x:hidden}
+.blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+.b1{width:500px;height:500px;background:rgba(200,241,53,0.05);top:-200px;left:-100px;filter:blur(100px)}
+.b2{width:400px;height:400px;background:rgba(120,80,255,0.07);bottom:-100px;right:-100px;filter:blur(120px)}
+nav{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:22px 40px;border-bottom:1px solid var(--line)}
+.logo{font-size:1.2rem;font-weight:700;letter-spacing:-0.5px}
+.logo em{color:var(--hi);font-style:normal}
+.nav-pill{font-size:11px;font-weight:600;letter-spacing:1px;padding:6px 14px;border-radius:100px;background:rgba(200,241,53,0.1);color:var(--hi);border:1px solid rgba(200,241,53,0.2)}
+.hero{position:relative;z-index:1;text-align:center;padding:80px 24px 56px;max-width:800px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--txt2);margin-bottom:28px}
+.eyebrow-line{width:24px;height:1px;background:var(--txt2)}
+h1{font-size:clamp(2.4rem,7vw,4.8rem);font-weight:700;line-height:1.08;letter-spacing:-2px;margin-bottom:20px}
+h1 .acc{display:inline-block;background:var(--hi);color:var(--ink);border-radius:8px;padding:2px 14px;transform:rotate(-1.5deg);font-style:italic}
+.sub{font-size:1rem;color:var(--txt2);line-height:1.8;max-width:440px;margin:0 auto 56px;font-weight:300}
+.zone{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:0 24px 80px}
+.ishell{background:var(--ink2);border:1px solid var(--line2);border-radius:var(--r3);padding:6px 6px 6px 20px;display:flex;align-items:center;gap:8px;transition:border-color .2s,box-shadow .2s;margin-bottom:14px}
+.ishell:focus-within{border-color:var(--hi);box-shadow:0 0 0 4px rgba(200,241,53,0.09)}
+.uin{flex:1;background:transparent;border:none;outline:none;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:0.95rem;color:var(--txt);padding:12px 0;direction:ltr}
+.uin::placeholder{color:var(--txt2)}
+.ppill{display:flex;align-items:center;gap:6px;padding:10px 16px;background:var(--ink3);border:1px solid var(--line2);border-radius:20px;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:12px;font-weight:600;color:var(--txt2);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.ppill:hover{border-color:var(--hi);color:var(--hi)}
+.gobtn{padding:13px 28px;background:var(--hi);color:var(--ink);border:none;border-radius:22px;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0;display:flex;align-items:center;gap:6px}
+.gobtn:hover{background:var(--hi2);transform:scale(1.03)}
+.gobtn:active{transform:scale(0.98)}
+.gobtn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.gld{width:16px;height:16px;border:2px solid rgba(0,0,0,.25);border-top-color:var(--ink);border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{font-size:11px;font-weight:500;color:var(--txt2);padding:5px 12px;border-radius:100px;background:rgba(255,255,255,0.04);border:1px solid var(--line)}
+.vcard{display:none;background:var(--ink2);border:1px solid var(--line2);border-radius:var(--r2);overflow:hidden;margin-top:28px;animation:up .35s ease}
+.vcard.show{display:block}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.vthumb{width:100%;height:200px;object-fit:cover;display:block;background:var(--ink3)}
+.vbody{padding:20px}
+.vplatform{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--hi);margin-bottom:8px}
+.vtitle{font-size:1rem;font-weight:600;line-height:1.4;margin-bottom:6px}
+.vdur{font-size:12px;color:var(--txt2)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 20px}
+.olabel{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt2);margin-bottom:6px}
+.osel{width:100%;padding:11px 14px;background:var(--ink3);border:1px solid var(--line2);border-radius:var(--r);font-family:'IBM Plex Sans Arabic',sans-serif;font-size:0.88rem;color:var(--txt);outline:none;cursor:pointer;appearance:none;transition:border-color .2s}
+.osel:focus{border-color:var(--hi)}
+.osel option{background:var(--ink2)}
+.dlbig{display:flex;align-items:center;justify-content:center;gap:10px;width:calc(100% - 40px);margin:0 20px 20px;padding:16px;background:var(--hi);color:var(--ink);border:none;border-radius:var(--r2);font-family:'IBM Plex Sans Arabic',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s}
+.dlbig:hover{background:var(--hi2);transform:translateY(-1px)}
+.dlbig:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.dld{width:18px;height:18px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--ink);border-radius:50%;animation:spin .7s linear infinite;display:none}
+.progw{display:none;padding:16px 20px;border-top:1px solid var(--line)}
+.progw.show{display:block}
+.progtop{display:flex;justify-content:space-between;font-size:12px;color:var(--txt2);margin-bottom:10px}
+.progtrack{height:4px;background:var(--ink3);border-radius:2px;overflow:hidden}
+.progfill{height:100%;width:0;border-radius:2px;background:linear-gradient(90deg,var(--hi2),var(--hi));transition:width .4s ease}
+.donew{display:none;padding:20px;border-top:1px solid var(--line);text-align:center;animation:up .3s ease}
+.donew.show{display:block}
+.doneico{width:52px;height:52px;border-radius:50%;background:rgba(200,241,53,0.1);border:1px solid rgba(200,241,53,0.25);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px;color:var(--hi);font-weight:700}
+.donetitle{font-size:1rem;font-weight:700;color:var(--hi);margin-bottom:4px}
+.donesub{font-size:12px;color:var(--txt2);margin-bottom:16px}
+.savebtn{display:inline-flex;align-items:center;gap:8px;padding:13px 32px;background:var(--hi);color:var(--ink);border-radius:100px;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:0.9rem;font-weight:700;text-decoration:none;transition:all .2s}
+.savebtn:hover{background:var(--hi2);transform:translateY(-1px)}
+.errw{display:none;padding:16px 20px;border-top:1px solid rgba(255,80,80,.15);background:rgba(255,50,50,.04);animation:up .3s ease}
+.errw.show{display:flex;gap:12px;align-items:flex-start}
+.errtxt{font-size:13px;color:#ff9090;line-height:1.6}
+.errhd{font-weight:700;color:#ff6060;margin-bottom:3px;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.feats{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:0 24px 100px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.feat{background:var(--ink2);border:1px solid var(--line);border-radius:var(--r2);padding:22px 18px}
+.featn{font-size:28px;font-weight:700;color:var(--hi);letter-spacing:-1px;margin-bottom:10px;line-height:1}
+.featt{font-size:0.88rem;font-weight:600;margin-bottom:4px}
+.featd{font-size:12px;color:var(--txt2);line-height:1.6}
+footer{position:relative;z-index:1;border-top:1px solid var(--line);text-align:center;padding:28px;font-size:12px;color:var(--txt2);line-height:1.8}
+@media(max-width:600px){nav{padding:18px 20px}.opts{grid-template-columns:1fr}.feats{grid-template-columns:1fr}h1{letter-spacing:-1px}}
+</style>
+</head>
+<body>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<nav>
+  <div class="logo">save<em>ly</em></div>
+  <div class="nav-pill">مجاني · بلا حدود</div>
+</nav>
+<div class="hero">
+  <div class="eyebrow"><span class="eyebrow-line"></span>أقوى أداة تحميل<span class="eyebrow-line"></span></div>
+  <h1>حمّل أي فيديو<br/><span class="acc">بدون علامة</span></h1>
+  <p class="sub">تقنية yt-dlp الأقوى — يوتيوب، تيك توك، إنستغرام، تويتر وأكثر من ألف موقع</p>
+</div>
+<div class="zone">
+  <div class="ishell">
+    <input class="uin" id="urlIn" type="text" placeholder="الصق رابط الفيديو هنا..." autocomplete="off"/>
+    <button class="ppill" onclick="doPaste()">لصق</button>
+    <button class="gobtn" id="goBtn" onclick="doAnalyze()">
+      <span id="goTxt">تحليل</span>
+      <div class="gld" id="goLd"></div>
+    </button>
+  </div>
+  <div class="chips">
+    <div class="chip">يوتيوب</div><div class="chip">تيك توك</div><div class="chip">إنستغرام</div>
+    <div class="chip">تويتر/X</div><div class="chip">فيسبوك</div><div class="chip">Vimeo</div><div class="chip">+1000 موقع</div>
+  </div>
+  <div class="vcard" id="vcard">
+    <img class="vthumb" id="vThumb" src="" alt=""/>
+    <div class="vbody">
+      <div class="vplatform" id="vPlatform">—</div>
+      <div class="vtitle" id="vTitle">—</div>
+      <div class="vdur" id="vDur">—</div>
+    </div>
+    <div class="opts">
+      <div>
+        <div class="olabel">الصيغة</div>
+        <select class="osel" id="fmtSel" onchange="onFmt()">
+          <option value="mp4">فيديو MP4</option>
+          <option value="mp3">صوت MP3</option>
+        </select>
+      </div>
+      <div id="qualWrap">
+        <div class="olabel">الجودة</div>
+        <select class="osel" id="qualSel">
+          <option value="best">أفضل جودة</option>
+        </select>
+      </div>
+    </div>
+    <button class="dlbig" id="dlBtn" onclick="doDownload()">
+      <span id="dlTxt">تحميل الآن</span>
+      <div class="dld" id="dlLd"></div>
+    </button>
+    <div class="progw" id="progW">
+      <div class="progtop">
+        <span id="progMsg">جارٍ التحميل...</span>
+        <span id="progPct">0%</span>
+      </div>
+      <div class="progtrack"><div class="progfill" id="progFill"></div></div>
+    </div>
+    <div class="donew" id="doneW">
+      <div class="doneico">✓</div>
+      <div class="donetitle">جاهز!</div>
+      <div class="donesub" id="doneSub">اضغط لحفظ الملف</div>
+      <a class="savebtn" id="saveLink" href="#">حفظ الملف</a>
+    </div>
+    <div class="errw" id="errW">
+      <div class="errtxt">
+        <div class="errhd">حدث خطأ</div>
+        <div id="errMsg">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="feats">
+  <div class="feat"><div class="featn">4K</div><div class="featt">جودة أصلية</div><div class="featd">تحميل بأعلى دقة متاحة بدون ضغط</div></div>
+  <div class="feat"><div class="featn">0</div><div class="featt">علامة مائية</div><div class="featd">الفيديو نظيف تماماً كما على المنصة</div></div>
+  <div class="feat"><div class="featn">10د</div><div class="featt">حذف تلقائي</div><div class="featd">ملفاتك تُحذف بعد التحميل لخصوصيتك</div></div>
+</div>
+<footer>Savely — مجاني دائماً · بلا إعلانات · بلا تتبع<br/>يُرجى احترام حقوق الملكية الفكرية وشروط استخدام المنصات</footer>
+<script>
+let jobId=null,pollT=null,fakeT=null,fakePct=0;
+async function doPaste(){try{const t=await navigator.clipboard.readText();document.getElementById('urlIn').value=t}catch{document.getElementById('urlIn').focus()}}
+function fmtDur(s){if(!s||s<1)return'—';return Math.floor(s/60)+'د '+String(s%60).padStart(2,'0')+'ث'}
+function setGoLoad(v){document.getElementById('goBtn').disabled=v;document.getElementById('goTxt').style.display=v?'none':'block';document.getElementById('goLd').style.display=v?'block':'none'}
+function setDlLoad(v){document.getElementById('dlBtn').disabled=v;document.getElementById('dlTxt').style.display=v?'none':'block';document.getElementById('dlLd').style.display=v?'block':'none'}
+function showProg(v){document.getElementById('progW').classList.toggle('show',v)}
+function setProg(p,msg){p=Math.min(100,Math.round(p));document.getElementById('progFill').style.width=p+'%';document.getElementById('progPct').textContent=p+'%';if(msg)document.getElementById('progMsg').textContent=msg}
+function showErr(m){document.getElementById('errMsg').textContent=m||'—';document.getElementById('errW').classList.add('show')}
+function hideAll(){['progW','doneW','errW'].forEach(id=>document.getElementById(id).classList.remove('show'))}
+function startFake(){fakePct=5;setProg(5,'جارٍ التحميل من المصدر...');const msgs=['جارٍ التحميل...','معالجة الفيديو...','تحضير الملف...'];fakeT=setInterval(()=>{if(fakePct<82){fakePct+=Math.random()*3.5;setProg(fakePct,msgs[Math.floor(Math.random()*msgs.length)])}},900)}
+function stopFake(){clearInterval(fakeT)}
+async function doAnalyze(){
+  const url=document.getElementById('urlIn').value.trim();if(!url)return;
+  setGoLoad(true);document.getElementById('vcard').classList.remove('show');hideAll();
+  try{
+    const r=await fetch('/api/info',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});
+    const d=await r.json();
+    if(d.error||!r.ok){showErr(d.error||'فشل التحليل');setGoLoad(false);document.getElementById('vcard').classList.add('show');return}
+    document.getElementById('vThumb').src=d.thumbnail||'';
+    document.getElementById('vPlatform').textContent=d.platform||'—';
+    document.getElementById('vTitle').textContent=d.title||'فيديو';
+    document.getElementById('vDur').textContent=fmtDur(d.duration);
+    const qs=document.getElementById('qualSel');
+    qs.innerHTML='<option value="best">أفضل جودة</option>';
+    (d.heights||[]).forEach(h=>{const o=document.createElement('option');o.value=h;o.textContent=h+'p';qs.appendChild(o)});
+    document.getElementById('vcard').classList.add('show');
+  }catch(e){showErr('تعذر الاتصال: '+e.message);document.getElementById('vcard').classList.add('show')}
+  setGoLoad(false);
+}
+async function doDownload(){
+  const url=document.getElementById('urlIn').value.trim();
+  const fmt=document.getElementById('fmtSel').value;
+  const quality=document.getElementById('qualSel').value;
+  setDlLoad(true);hideAll();showProg(true);startFake();
+  try{
+    const r=await fetch('/api/download',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,format:fmt,quality})});
+    const d=await r.json();
+    if(d.error||!r.ok){stopFake();showProg(false);showErr(d.error);setDlLoad(false);return}
+    jobId=d.job_id;poll();
+  }catch(e){stopFake();showProg(false);showErr('خطأ: '+e.message);setDlLoad(false)}
+}
+function poll(){
+  clearTimeout(pollT);
+  pollT=setTimeout(async()=>{
+    try{
+      const r=await fetch('/api/status/'+jobId);const d=await r.json();
+      if(d.status==='done'){
+        stopFake();setProg(100,'اكتمل!');
+        setTimeout(()=>{
+          showProg(false);
+          document.getElementById('doneSub').textContent=(d.ext==='mp3'?'ملف MP3':'فيديو MP4')+' — '+((d.title||'').substring(0,40));
+          document.getElementById('saveLink').href='/api/file/'+jobId;
+          document.getElementById('doneW').classList.add('show');
+          setDlLoad(false);
+        },500);
+      }else if(d.status==='error'){stopFake();showProg(false);showErr(d.error||'خطأ');setDlLoad(false)}
+      else poll();
+    }catch{poll()}
+  },1500);
+}
+function onFmt(){const mp3=document.getElementById('fmtSel').value==='mp3';document.getElementById('qualWrap').style.opacity=mp3?'.35':'1';document.getElementById('qualSel').disabled=mp3}
+document.getElementById('urlIn').addEventListener('keydown',e=>{if(e.key==='Enter')doAnalyze()});
+</script>
+</body>
+</html>
